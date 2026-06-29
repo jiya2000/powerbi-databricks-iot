@@ -37,24 +37,25 @@ def run_pipeline():
     # Cast timestamp
     df_silver = df_silver.withColumn("timestamp", col("timestamp").cast("timestamp"))
     
-    # --- GOLD LAYER: Aggregations for Power BI ---
-    print("Aggregating KPIs for Gold layer...")
+    # --- GOLD LAYER: Aggregations for Power BI (Using Spark SQL) ---
+    print("Aggregating KPIs for Gold layer using Spark SQL...")
     
-    # 1. Overall Machine Stats (Avg Temp, Avg Vibration)
-    df_gold_kpi = df_silver.groupBy("machine_id").agg(
-        avg("temperature_c").alias("avg_temperature"),
-        max("temperature_c").alias("max_temperature"),
-        avg("vibration_hz").alias("avg_vibration"),
-        avg("cycle_time_sec").alias("avg_cycle_time")
-    )
+    # Create a temporary view to use standard SQL
+    df_silver.createOrReplaceTempView("silver_iot_data")
     
-    # 2. Anomaly Counts
-    df_anomalies = df_silver.filter(col("status") == "Anomaly") \
-                            .groupBy("machine_id") \
-                            .agg(count("*").alias("anomaly_count"))
-                            
-    # Join KPIs with Anomaly Counts
-    df_gold_final = df_gold_kpi.join(df_anomalies, on="machine_id", how="left").fillna(0)
+    # Execute SQL query to calculate KPIs and anomaly counts simultaneously
+    sql_query = """
+        SELECT 
+            machine_id,
+            AVG(temperature_c) AS avg_temperature,
+            MAX(temperature_c) AS max_temperature,
+            AVG(vibration_hz) AS avg_vibration,
+            AVG(cycle_time_sec) AS avg_cycle_time,
+            SUM(CASE WHEN status = 'Anomaly' THEN 1 ELSE 0 END) AS anomaly_count
+        FROM silver_iot_data
+        GROUP BY machine_id
+    """
+    df_gold_final = spark.sql(sql_query)
     
     # Output to console to verify
     df_gold_final.show()
