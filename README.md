@@ -1,8 +1,6 @@
-# General Motors - Engineering Standards Intern Project
+# Automotive IoT Manufacturing Analytics
 
-## Automotive IoT Manufacturing Analytics
-
-This project simulates an automotive assembly line and builds a data pipeline using Python, Databricks (PySpark), and Power BI. It directly aligns with the skills requested in the **Intern - Engineering Standards** role at GM.
+This project simulates an automotive assembly line and builds a comprehensive data pipeline using Python, Databricks (PySpark), and Power BI. It demonstrates the ability to ingest, process, and visualize manufacturing IoT data at scale to improve plant throughput and monitor equipment health.
 
 ### Architecture Overview
 
@@ -48,4 +46,4 @@ python local_data_processor.py
    - **Clustered Bar Chart**: Average Temperature by Machine (`machine_id` on X, `avg_temperature` on Y)
    - **Donut Chart**: Proportion of Anomalies by Machine
    - **Gauge Chart**: Average Cycle Time (to measure throughput efficiency)
-5. **Aesthetics**: Use GM's branding (Blue and White) or a sleek dark mode theme to make the dashboard look professional and premium.
+5. **Aesthetics**: Use a sleek dark mode theme or a clean corporate branding to make the dashboard look professional and premium.
