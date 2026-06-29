@@ -47,3 +47,6 @@ python local_data_processor.py
    - **Donut Chart**: Proportion of Anomalies by Machine
    - **Gauge Chart**: Average Cycle Time (to measure throughput efficiency)
 5. **Aesthetics**: Use a sleek dark mode theme or a clean corporate branding to make the dashboard look professional and premium.
+
+## Final Dashboard
+![Automotive IoT Dashboard](dashboard.png)
